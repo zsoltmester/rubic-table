@@ -22,7 +22,8 @@ public class RubicTableGui implements Runnable {
     }
     
     private void initTable() {
-        RubicTablePanel tablePanel = new RubicTablePanel();
+        RubicTableLogic logic = new RubicTableLogic();
+        RubicTablePanel tablePanel = new RubicTablePanel(logic);
         frame.getContentPane().add(BorderLayout.CENTER, tablePanel);
     }
     
