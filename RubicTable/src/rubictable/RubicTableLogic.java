@@ -8,8 +8,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * Contains the logic of the Rubic Table game.
+ *
+ * @author zsmester
+ */
 public class RubicTableLogic {
 
+    /**
+     * The direction of a column or a row.
+     */
     public enum Direction {
         POSITIVE, NEGATIVE
     }
@@ -20,10 +28,20 @@ public class RubicTableLogic {
     private int moves;
     private final FinishListener finishListener;
 
+    /**
+     * Crates a new Robic Table logic.
+     *
+     * @param finishListener Called when the game is finished.
+     */
     public RubicTableLogic(FinishListener finishListener) {
         this.finishListener = finishListener;
     }
 
+    /**
+     * Resets the game based on the given size.
+     *
+     * @param size The size of the table.
+     */
     public void reset(int size) {
         this.size = size;
         colors = new HashMap<>();
@@ -56,14 +74,33 @@ public class RubicTableLogic {
         currentRow.add(color);
     }
 
+    /**
+     * Gets the color of a field.
+     *
+     * @param row The field row.
+     * @param column The field column.
+     * @return The color of the field.
+     */
     public Color getField(int row, int column) {
         return fields.get(row).get(column);
     }
 
+    /**
+     * Moves the given row to the given direction.
+     *
+     * @param rowIndex The index of the row.
+     * @param direction The direction to move,
+     */
     public void moveHorizontal(int rowIndex, Direction direction) {
         move(fields.get(rowIndex), direction);
     }
 
+    /**
+     * Moves the given column to the given direction.
+     *
+     * @param columnIndex The index of the column.
+     * @param direction The direction to move,
+     */
     public void moveVertical(int columnIndex, Direction direction) {
         List<Color> column = new ArrayList();
         fields.stream().forEach((row) -> {
@@ -91,19 +128,39 @@ public class RubicTableLogic {
         }
     }
 
+    /**
+     * Gets the number of moves.
+     *
+     * @return The number of moves.
+     */
     public int getMoves() {
         return moves;
     }
 
+    /**
+     * Gets the size of the table.
+     *
+     * @return The size of the table.
+     */
     public int getSize() {
         return size;
     }
 
+    /**
+     * Use this if you want to get noticed if the game finished.
+     */
     public interface FinishListener {
 
+        /**
+         * Called when the game is finished.
+         */
         void gameFinished();
     }
 
+    /**
+     * Check if the game is finished. If finished, class the attached
+     * {@link FinishListener}.
+     */
     public void checkFinish() {
         if (checkHorizontal() || checkVertical()) {
             finishListener.gameFinished();

@@ -6,10 +6,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import rubictable.RubicTableLogic.Direction;
 
+/**
+ * The main UI component of the Rubic Table game.
+ * 
+ * @author zsmester
+ */
 public final class RubicTablePanel extends JPanel {
 
     private final List<List<JPanel>> fields = new ArrayList<>();
@@ -17,6 +21,12 @@ public final class RubicTablePanel extends JPanel {
 
     private final RubicTableLogic logic;
 
+    /**
+     * Creates a new instance based on the given params.
+     * 
+     * @param size The size of the table.
+     * @param logic The logic.
+     */
     public RubicTablePanel(int size, RubicTableLogic logic) {
         this.logic = logic;
         this.size = size;
@@ -44,7 +54,7 @@ public final class RubicTablePanel extends JPanel {
         add(field);
     }
 
-    public void repaintFields() {
+    private void repaintFields() {
         for (int row = 0; row < size; ++row) {
             for (int column = 0; column < size; ++column) {
                 fields.get(row).get(column)

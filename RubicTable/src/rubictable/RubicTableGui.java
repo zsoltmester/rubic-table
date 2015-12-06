@@ -15,6 +15,9 @@ public class RubicTableGui implements RubicTableLogic.FinishListener {
 
     private final RubicTableLogic logic;
 
+    /**
+     * Creates a new Rubic Table GUI and starts the game.
+     */
     public RubicTableGui() {
         logic = new RubicTableLogic(this);
         frame = new JFrame("Rubic Table");

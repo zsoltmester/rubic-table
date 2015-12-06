@@ -1,5 +1,10 @@
 package rubictable;
 
+/**
+ * The main class of the Rubic Table game.
+ * 
+ * @author zsmester
+ */
 public class RubicTableApp {
 
     /**
