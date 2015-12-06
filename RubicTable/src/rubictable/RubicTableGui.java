@@ -11,6 +11,7 @@ import javax.swing.JMenuItem;
 public class RubicTableGui implements Runnable {
     
     private final JFrame frame;
+    private RubicTablePanel tablePanel;
     
     public RubicTableGui() {
         frame = new JFrame("Rubic Table");
@@ -23,7 +24,7 @@ public class RubicTableGui implements Runnable {
     
     private void initTable() {
         RubicTableLogic logic = new RubicTableLogic();
-        RubicTablePanel tablePanel = new RubicTablePanel(logic);
+        tablePanel = new RubicTablePanel(logic);
         frame.getContentPane().add(BorderLayout.CENTER, tablePanel);
     }
     
