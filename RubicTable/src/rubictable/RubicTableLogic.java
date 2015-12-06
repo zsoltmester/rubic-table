@@ -17,7 +17,12 @@ public class RubicTableLogic {
     private final List<List<Color>> fields = new ArrayList<>();
     private int size;
     private Map<Color, Integer> colors;
-    private int count;
+    private int moves;
+    private final FinishListener finishListener;
+
+    public RubicTableLogic(FinishListener finishListener) {
+        this.finishListener = finishListener;
+    }
 
     public void reset(int size) {
         this.size = size;
@@ -25,7 +30,7 @@ public class RubicTableLogic {
         for (int i = 0; i < size; ++i) {
             colors.put(AppConfig.AVAILABLE_COLORS.get(i), 0);
         }
-        count = 0;
+        moves = 0;
         fields.clear();
         for (int row = 0; row < size; ++row) {
             List<Color> currentRow = new ArrayList<>(size);
@@ -33,6 +38,9 @@ public class RubicTableLogic {
                 addField(currentRow);
             }
             fields.add(currentRow);
+        }
+        if (checkHorizontal() || checkVertical()) {
+            reset(size);
         }
     }
 
@@ -58,9 +66,9 @@ public class RubicTableLogic {
 
     public void moveVertical(int columnIndex, Direction direction) {
         List<Color> column = new ArrayList();
-        for (List<Color> row : fields) {
+        fields.stream().forEach((row) -> {
             column.add(row.get(columnIndex));
-        }
+        });
 
         move(column, direction);
 
@@ -73,7 +81,7 @@ public class RubicTableLogic {
     }
 
     private void move(List<Color> list, Direction direction) {
-        ++count;
+        ++moves;
         for (int i = 0; i < size - 1; ++i) {
             if (direction == Direction.POSITIVE) {
                 Collections.swap(list, i, size - 1);
@@ -83,13 +91,48 @@ public class RubicTableLogic {
         }
     }
 
-    public int getCount() {
-        return count;
+    public int getMoves() {
+        return moves;
     }
 
-    public boolean isEnded() {
-        
-        return false;
+    public int getSize() {
+        return size;
     }
 
+    public interface FinishListener {
+
+        void gameFinished();
+    }
+
+    public void checkFinish() {
+        if (checkHorizontal() || checkVertical()) {
+            finishListener.gameFinished();
+        }
+    }
+
+    private boolean checkHorizontal() {
+        for (List<Color> row : fields) {
+            Color first = row.get(0);
+            if (!row.stream().allMatch((color) -> color.equals(first))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkVertical() {
+        int column = 0;
+        while (column < size) {
+            for (List<Color> rowI : fields) {
+                Color first = rowI.get(column);
+                for (List<Color> rowJ : fields) {
+                    if (!rowJ.get(column).equals(first)) {
+                        return false;
+                    }
+                }
+            }
+            ++column;
+        }
+        return true;
+    }
 }

@@ -6,27 +6,20 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import rubictable.RubicTableLogic.Direction;
 
-public class RubicTablePanel extends JPanel {
+public final class RubicTablePanel extends JPanel {
 
     private final List<List<JPanel>> fields = new ArrayList<>();
-    private int size;
+    private final int size;
 
-    private RubicTableLogic logic;
-
-    public RubicTablePanel(RubicTableLogic logic) {
-        this(AppConfig.DEFAULT_SIZE, logic);
-    }
+    private final RubicTableLogic logic;
 
     public RubicTablePanel(int size, RubicTableLogic logic) {
-        this.size = size;
         this.logic = logic;
-        reset(size);
-    }
-
-    public void reset(int size) {
+        this.size = size;
         setLayout(new GridLayout(size, size));
         logic.reset(size);
         initFields();
@@ -51,7 +44,7 @@ public class RubicTablePanel extends JPanel {
         add(field);
     }
 
-    private void repaintFields() {
+    public void repaintFields() {
         for (int row = 0; row < size; ++row) {
             for (int column = 0; column < size; ++column) {
                 fields.get(row).get(column)
@@ -98,6 +91,7 @@ public class RubicTablePanel extends JPanel {
                         ? Direction.NEGATIVE : Direction.POSITIVE);
             }
             repaintFields();
+            logic.checkFinish();
         }
 
         @Override
